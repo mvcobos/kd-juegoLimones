@@ -89,7 +89,7 @@ function detectarAtrapado(){
 
     } else if(puntaje == 10){
         alert("GANASTE!!");
-        clearInterval(intervalo);
+        clearInterval(intervaloCaida);
     }
 }
 
@@ -100,7 +100,7 @@ function detectarPiso(){
         mostrarEnSpan("txtVidas", vidas);
         if(vidas == 0){
             alert("GAME OVER");
-            clearInterval(intervalo);
+            clearInterval(intervaloCaida);
         }
     }
 }
@@ -109,4 +109,15 @@ function aparecerLimon(){
     limonX = generarAleatorio(0,canvas.width - ANCHO_LIMON);
     limonY = 0;
     actualizarPantalla();
+}
+
+function reiniciar(){
+    clearInterval(intervaloCaida);   // detiene el juego que esté corriendo
+    vidas = 3;
+    puntaje = 0;
+    velocidadCaida = 200;            // vuelve a la velocidad inicial
+    personajeX = canvas.width / 2;   // recentra el personaje (opcional, pero recomendable)
+    mostrarEnSpan("txtVidas", vidas);
+    mostrarEnSpan("txtPuntaje", puntaje);
+    iniciar();
 }
