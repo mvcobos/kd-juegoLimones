@@ -1,31 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+/* ============================================================
+   Caza Limones — hoja de estilos
+   Paleta pastel original conservada (rosa, crema, turquesa)
+   + acentos temáticos: amarillo limón y coral pastel.
+   No se modifican nombres de componentes (ids / clases / funciones).
+   ============================================================ */
+
+:root {
+  /* Tipografías */
+  --font-display: 'Fredoka', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* Fondo y superficies */
+  --bg-top: #FFF7F7;
+  --bg-base: #FFF2F2;      /* rosa pastel original */
+  --surface: #FFFDF9;      /* tarjeta */
+  --canvas-bg: #F9ECE0;    /* crema original */
+
+  /* Turquesa (color de marca original) */
+  --teal: #3DB6B1;
+  --teal-hover: #54C0BB;
+  --teal-deep: #2E9A96;
+  --teal-ink: #0E5A56;
+  --teal-soft: #E7F5F4;
+  --teal-border: #CDECEA;
+
+  /* Amarillo limón pastel */
+  --lemon: #FCE08A;
+  --lemon-hover: #FDE9A6;
+  --lemon-ink: #6B4A0E;
+
+  /* Coral pastel */
+  --coral: #E88A82;
+  --coral-num: #D9645B;
+  --coral-ink: #A5433C;
+  --coral-soft: #FCEAE7;
+  --coral-border: #F6D6D1;
+
+  /* Texto */
+  --ink: #463C34;          /* principal, cálido */
+  --ink-soft: #6E655E;     /* secundario */
+
+  /* Sombras suaves */
+  --shadow-card: 0 18px 40px -20px rgba(90, 70, 60, .28), 0 4px 12px -6px rgba(90, 70, 60, .14);
+  --shadow-btn: 0 6px 14px -8px rgba(90, 70, 60, .35);
+  --shadow-btn-hover: 0 10px 20px -10px rgba(90, 70, 60, .40);
+  --shadow-canvas: 0 16px 34px -18px rgba(45, 120, 116, .40);
+
+  /* Radios */
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-pill: 999px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #FFF2F2;
-  color: black;
+  font-family: var(--font-body);
+  color: var(--ink);
   text-align: center;
   margin: 0;
-  padding: 20px;
+  padding: clamp(16px, 4vw, 40px);
+  min-height: 100vh;
+  display: flex;                 /* centra la tarjeta sin recortarla al desbordar */
+  background:
+    radial-gradient(900px 520px at 12% -8%, rgba(252, 224, 138, .35), transparent 60%),
+    radial-gradient(820px 620px at 112% 118%, rgba(61, 182, 177, .20), transparent 58%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-base) 100%);
 }
 
+/* ----------------------- Tarjeta principal ----------------------- */
 .contenedor {
-  max-width: 800px;
-  margin: 0 auto;
+  margin: auto;
+  width: 100%;
+  max-width: 720px;
+  background: var(--surface);
+  border: 1px solid rgba(90, 70, 60, .06);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  box-shadow: var(--shadow-card);
 }
 
-canvas {
-  background-color: #f9ece0;
-  border: 3px solid #3DB6B1;
+/* ----------------------- Título ----------------------- */
+h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 6vw, 2.9rem);
+  line-height: 1.1;
+  letter-spacing: -.5px;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Limón que acompaña al título con un balanceo muy suave */
+h1::before {
+  content: "🍋";
+  display: inline-block;
+  margin-right: .5rem;
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+/* Subrayado degradado limón → turquesa */
+h1::after {
+  content: "";
   display: block;
-  margin: 20px auto;
+  width: clamp(56px, 18%, 90px);
+  height: 5px;
+  margin: .6rem auto 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--lemon), var(--teal));
 }
 
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50%      { transform: translateY(-6px) rotate(4deg); }
+}
+
+/* ----------------------- Subtítulo ----------------------- */
+/* Solo el <p> que es hijo directo del contenedor (el intro), no los del panel */
+.contenedor > p {
+  max-width: 42ch;
+  margin: 1rem auto 0;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+/* ----------------------- Crédito del autor ----------------------- */
+h2 {
+  display: inline-block;
+  margin: 1rem auto 0;
+  padding: .35rem .9rem;
+  font-family: var(--font-body);
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--teal-ink);
+  background: var(--teal-soft);
+  border: 1px solid var(--teal-border);
+  border-radius: var(--radius-pill);
+}
+
+/* ----------------------- Área de juego ----------------------- */
+canvas {
+  background: var(--canvas-bg);
+  border: 4px solid var(--teal);
+  border-radius: var(--radius-md);
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 100%;      /* se adapta en pantallas pequeñas */
+  height: auto;
+  box-shadow: var(--shadow-canvas);
+}
+
+/* ----------------------- Panel de marcadores ----------------------- */
 .panel {
-  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0 .5rem;
+}
+
+.panel p {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: .5rem;
+  min-width: 140px;
+  padding: .8rem 1.4rem;
+  border-radius: var(--radius-md);
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* 1ª tarjeta = Puntaje (turquesa) · 2ª = Vidas (coral) */
+.panel p:nth-of-type(1) { background: var(--teal-soft); border: 1.5px solid var(--teal-border); }
+.panel p:nth-of-type(2) { background: var(--coral-soft); border: 1.5px solid var(--coral-border); }
+
+.panel span {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+#txtPuntaje { color: var(--teal-deep); }
+#txtVidas   { color: var(--coral-num); }
+
+/* Corazoncito delante de las vidas (se mantiene aunque JS actualice el número) */
+#txtVidas::before {
+  content: "♥";
+  color: var(--coral);
+  font-size: .85em;
+  margin-right: .18rem;
+}
+
+/* ----------------------- Botones ----------------------- */
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .65rem;
+  margin-top: 1.75rem;
 }
 
 .botones button {
-  margin: 5px;
-  padding: 10px 16px;
-  font-size: 16px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .1px;
+  padding: .7rem 1.35rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
   cursor: pointer;
+  color: var(--teal-ink);
+  background: var(--teal);
+  box-shadow: var(--shadow-btn);
+  transition: transform .15s ease, background-color .15s ease,
+              box-shadow .15s ease, border-color .15s ease;
+}
+
+.botones button:hover {
+  background: var(--teal-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-btn-hover);
+}
+
+.botones button:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-btn);
+}
+
+/* 3er botón = "Bajar limon" (acción principal, amarillo limón) */
+.botones button:nth-child(3) {
+  background: var(--lemon);
+  color: var(--lemon-ink);
+}
+.botones button:nth-child(3):hover { background: var(--lemon-hover); }
+
+/* 4º botón = "Reiniciar" (secundario, contorno coral) */
+.botones button:nth-child(4) {
+  background: var(--surface);
+  color: var(--coral-ink);
+  border-color: var(--coral-border);
+  box-shadow: 0 4px 12px -8px rgba(90, 70, 60, .30);
+}
+.botones button:nth-child(4):hover {
+  background: var(--coral-soft);
+  border-color: var(--coral);
+}
+
+/* Foco visible con teclado (accesibilidad) */
+.botones button:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* ----------------------- Pantallas pequeñas ----------------------- */
+@media (max-width: 560px) {
+  .contenedor { padding: 1.4rem 1.1rem; border-radius: 22px; }
+  .botones button { flex: 1 1 44%; }   /* dos botones por fila */
+}
+
+/* ----------------------- Preferencia: menos movimiento ----------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
