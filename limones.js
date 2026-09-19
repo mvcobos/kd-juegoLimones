@@ -89,6 +89,7 @@ function detectarAtrapado(){
 
     } else if(puntaje == 10){
         alert("GANASTE!!");
+        clearInterval(intervalo);
     }
 }
 
@@ -99,6 +100,7 @@ function detectarPiso(){
         mostrarEnSpan("txtVidas", vidas);
         if(vidas == 0){
             alert("GAME OVER");
+            clearInterval(intervalo);
         }
     }
 }
@@ -108,4 +110,3 @@ function aparecerLimon(){
     limonY = 0;
     actualizarPantalla();
 }
-
