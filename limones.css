@@ -1,7 +1,7 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #190328;
-  color: white;
+  background-color: #FFF2F2;
+  color: black;
   text-align: center;
   margin: 0;
   padding: 20px;
@@ -13,8 +13,8 @@ body {
 }
 
 canvas {
-  background-color: #330a4a;
-  border: 3px solid #FEE7C8;
+  background-color: #f9ece0;
+  border: 3px solid #3DB6B1;
   display: block;
   margin: 20px auto;
 }
