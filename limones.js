@@ -14,9 +14,10 @@ let limonY = 0;
 let puntaje = 0;
 let vidas = 3;
 let velocidadCaida = 200;
+let intervaloCaida;
 
 function iniciar(){
-    setInterval(bajarLimon, velocidadCaida); //1P: funcion 2P: tiempo en milisegundos
+    intervaloCaida = setInterval(bajarLimon, velocidadCaida); //1P: funcion 2P: tiempo en milisegundos
     dibujarSuelo();
     dibujarPersonaje();
     aparecerLimon();
@@ -75,6 +76,19 @@ function detectarAtrapado(){
         aparecerLimon();
         puntaje += 1;
         mostrarEnSpan("txtPuntaje", puntaje);
+    }     
+    if(puntaje == 3){
+    velocidadCaida = 150;
+    clearInterval(intervaloCaida);
+    intervaloCaida = setInterval(bajarLimon, velocidadCaida);
+
+    } else if(puntaje == 6){
+        velocidadCaida = 100;
+        clearInterval(intervaloCaida);
+        intervaloCaida = setInterval(bajarLimon, velocidadCaida);
+
+    } else if(puntaje == 10){
+        alert("GANASTE!!");
     }
 }
 
@@ -82,7 +96,7 @@ function detectarPiso(){
     if(limonY + ALTURA_LIMON == canvas.height - ALTURA_SUELO){
         aparecerLimon();
         vidas -= 1;
-        mostrarEnSpan("txtPuntaje", vidas);
+        mostrarEnSpan("txtVidas", vidas);
         if(vidas == 0){
             alert("GAME OVER");
         }
