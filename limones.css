@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
-
 /* ============================================================
    Caza Limones — hoja de estilos
-   Paleta pastel original conservada (rosa, crema, turquesa)
-   + acentos temáticos: amarillo limón y coral pastel.
-   No se modifican nombres de componentes (ids / clases / funciones).
+   Paleta pastel original (rosa, crema, turquesa) + acentos
+   limón y coral. Ambiente floral con marmoleado, difuminados,
+   brillos y sombras. No se renombra ningún componente.
+   La imagen "flor.png" debe estar en la misma carpeta que index.html.
    ============================================================ */
 
 :root {
@@ -12,15 +11,15 @@
   --font-display: 'Fredoka', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
 
-  /* Fondo y superficies */
-  --bg-top: #FFF7F7;
-  --bg-base: #FFF2F2;      /* rosa pastel original */
-  --surface: #FFFDF9;      /* tarjeta */
-  --canvas-bg: #F9ECE0;    /* crema original */
+  /* Imagen de la flor (reutilizada en toda la decoración) */
+  --flor: url("flor.png");
+
+  /* Superficies */
+  --surface: #FFFDF9;
+  --canvas-bg: #F9ECE0;    /* crema original del área de juego */
 
   /* Turquesa (color de marca original) */
   --teal: #3DB6B1;
-  --teal-hover: #54C0BB;
   --teal-deep: #2E9A96;
   --teal-ink: #0E5A56;
   --teal-soft: #E7F5F4;
@@ -28,7 +27,6 @@
 
   /* Amarillo limón pastel */
   --lemon: #FCE08A;
-  --lemon-hover: #FDE9A6;
   --lemon-ink: #6B4A0E;
 
   /* Coral pastel */
@@ -39,24 +37,20 @@
   --coral-border: #F6D6D1;
 
   /* Texto */
-  --ink: #463C34;          /* principal, cálido */
-  --ink-soft: #6E655E;     /* secundario */
-
-  /* Sombras suaves */
-  --shadow-card: 0 18px 40px -20px rgba(90, 70, 60, .28), 0 4px 12px -6px rgba(90, 70, 60, .14);
-  --shadow-btn: 0 6px 14px -8px rgba(90, 70, 60, .35);
-  --shadow-btn-hover: 0 10px 20px -10px rgba(90, 70, 60, .40);
-  --shadow-canvas: 0 16px 34px -18px rgba(45, 120, 116, .40);
+  --ink: #463C34;
+  --ink-soft: #6E655E;
 
   /* Radios */
-  --radius-lg: 28px;
-  --radius-md: 18px;
+  --radius-lg: 30px;
+  --radius-md: 20px;
   --radius-pill: 999px;
+
+  /* Sombras suaves y con color */
+  --shadow-btn: 0 6px 14px -8px rgba(120, 80, 90, .40);
+  --shadow-btn-hover: 0 12px 22px -10px rgba(120, 80, 90, .50);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   font-family: var(--font-body);
@@ -66,38 +60,116 @@ body {
   padding: clamp(16px, 4vw, 40px);
   min-height: 100vh;
   display: flex;                 /* centra la tarjeta sin recortarla al desbordar */
+  position: relative;
+  overflow-x: hidden;            /* evita scroll lateral por las flores */
+  /* Fondo con veladuras pastel (iluminación difusa) */
   background:
-    radial-gradient(900px 520px at 12% -8%, rgba(252, 224, 138, .35), transparent 60%),
-    radial-gradient(820px 620px at 112% 118%, rgba(61, 182, 177, .20), transparent 58%),
-    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-base) 100%);
+    radial-gradient(1000px 560px at 10% -10%, rgba(252, 224, 138, .30), transparent 60%),
+    radial-gradient(900px 640px at 115% 120%, rgba(61, 182, 177, .22), transparent 58%),
+    radial-gradient(700px 500px at 90% -5%, rgba(232, 138, 130, .20), transparent 55%),
+    linear-gradient(180deg, #FFF7F7 0%, #FFF1F1 55%, #FDECEC 100%);
 }
 
-/* ----------------------- Tarjeta principal ----------------------- */
+/* ============================================================
+   Flores decorativas de fondo (difuminadas, flotando)
+   ============================================================ */
+.decoracion {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.flor {
+  position: absolute;
+  background: var(--flor) center / contain no-repeat;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.flor--1 { width: 250px; height: 250px; top: -70px;  left: -80px;  opacity: .45; filter: blur(3px); animation: flotar 16s ease-in-out infinite; }
+.flor--2 { width: 330px; height: 330px; bottom: -120px; right: -100px; opacity: .40; filter: blur(5px); animation: flotar 21s ease-in-out infinite reverse; }
+.flor--3 { width: 150px; height: 150px; top: 14%;   right: -45px;  opacity: .30; filter: blur(4px); animation: flotar 18s ease-in-out infinite 2s; }
+.flor--4 { width: 130px; height: 130px; bottom: 9%; left: -35px;   opacity: .30; filter: blur(4px); animation: flotar 23s ease-in-out infinite 1s reverse; }
+.flor--5 { width: 90px;  height: 90px;  top: 44%;   left: 7%;      opacity: .18; filter: blur(2px); animation: flotar 14s ease-in-out infinite 3s; }
+
+@keyframes flotar {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-18px) rotate(6deg); }
+}
+
+/* ============================================================
+   Tarjeta principal (marmoleado + luz superior + sombra rosada)
+   ============================================================ */
 .contenedor {
+  position: relative;
+  z-index: 1;
   margin: auto;
   width: 100%;
   max-width: 720px;
-  background: var(--surface);
-  border: 1px solid rgba(90, 70, 60, .06);
+  padding: clamp(1.6rem, 4vw, 2.6rem);
   border-radius: var(--radius-lg);
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(255, 255, 255, .8);
+  /* Marmoleado pastel + brillo de luz arriba + degradado base */
+  background:
+    radial-gradient(130% 90% at 50% -20%, rgba(255, 255, 255, .95), rgba(255, 255, 255, 0) 55%),
+    radial-gradient(80% 55% at 12% 18%, rgba(252, 224, 138, .20), transparent 60%),
+    radial-gradient(85% 60% at 88% 22%, rgba(232, 138, 130, .18), transparent 60%),
+    radial-gradient(100% 80% at 75% 108%, rgba(61, 182, 177, .16), transparent 60%),
+    linear-gradient(180deg, #FFFDFB 0%, #FFF5F3 100%);
+  box-shadow:
+    0 34px 70px -34px rgba(200, 90, 130, .35),   /* sombra rosada de elevación */
+    0 14px 30px -16px rgba(120, 80, 90, .20),
+    inset 0 1px 0 rgba(255, 255, 255, .95),      /* borde superior iluminado */
+    inset 0 -26px 50px -40px rgba(150, 90, 110, .18); /* leve viñeta inferior */
 }
 
-/* ----------------------- Título ----------------------- */
+/* Flores crocantes en las esquinas de la tarjeta */
+.flor-esquina {
+  position: absolute;
+  width: 86px;
+  height: 86px;
+  background: var(--flor) center / contain no-repeat;
+  filter: drop-shadow(0 8px 12px rgba(150, 60, 90, .35));
+  pointer-events: none;
+  z-index: 2;
+}
+.flor-esquina--tl { top: -28px; left: -24px; animation: mecerTL 7s ease-in-out infinite; }
+.flor-esquina--br { bottom: -26px; right: -22px; width: 66px; height: 66px; animation: mecerBR 8s ease-in-out infinite; }
+
+@keyframes mecerTL {
+  0%, 100% { transform: rotate(-16deg) translateY(0); }
+  50%      { transform: rotate(-8deg) translateY(-5px); }
+}
+@keyframes mecerBR {
+  0%, 100% { transform: rotate(12deg) translateY(0); }
+  50%      { transform: rotate(20deg) translateY(-4px); }
+}
+
+/* ============================================================
+   Título
+   ============================================================ */
 h1 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2rem, 6vw, 2.9rem);
-  line-height: 1.1;
+  font-size: clamp(2.1rem, 6.5vw, 3rem);
+  line-height: 1.08;
   letter-spacing: -.5px;
-  color: var(--ink);
   margin: 0;
+  /* Texto con degradado rosado (con color de respaldo) */
+  color: #B83E6E;
+  background: linear-gradient(180deg, #DE5E90 0%, #C2467C 60%, #A83A6A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 6px rgba(200, 90, 130, .25));
 }
 
-/* Limón que acompaña al título con un balanceo muy suave */
+/* Limón que acompaña al título con un balanceo suave */
 h1::before {
   content: "🍋";
+  -webkit-text-fill-color: initial;   /* que el emoji conserve su color */
   display: inline-block;
   margin-right: .5rem;
   animation: bob 3.2s ease-in-out infinite;
@@ -107,7 +179,7 @@ h1::before {
 h1::after {
   content: "";
   display: block;
-  width: clamp(56px, 18%, 90px);
+  width: clamp(60px, 20%, 96px);
   height: 5px;
   margin: .6rem auto 0;
   border-radius: var(--radius-pill);
@@ -119,49 +191,60 @@ h1::after {
   50%      { transform: translateY(-6px) rotate(4deg); }
 }
 
-/* ----------------------- Subtítulo ----------------------- */
-/* Solo el <p> que es hijo directo del contenedor (el intro), no los del panel */
+/* ============================================================
+   Subtítulo y crédito del autor
+   ============================================================ */
 .contenedor > p {
-  max-width: 42ch;
+  max-width: 44ch;
   margin: 1rem auto 0;
   color: var(--ink-soft);
-  font-size: 1.05rem;
+  font-size: 1.06rem;
   line-height: 1.55;
 }
 
-/* ----------------------- Crédito del autor ----------------------- */
 h2 {
   display: inline-block;
-  margin: 1rem auto 0;
-  padding: .35rem .9rem;
+  margin: 1.1rem auto 0;
+  padding: .4rem 1rem;
   font-family: var(--font-body);
   font-size: .82rem;
   font-weight: 600;
   color: var(--teal-ink);
-  background: var(--teal-soft);
-  border: 1px solid var(--teal-border);
+  background: rgba(231, 245, 244, .7);
+  border: 1px solid rgba(205, 236, 234, .9);
   border-radius: var(--radius-pill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .85), 0 6px 14px -10px rgba(45, 120, 116, .40);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
-/* ----------------------- Área de juego ----------------------- */
+/* ============================================================
+   Área de juego (marco iluminado con resplandor de color)
+   ============================================================ */
 canvas {
   background: var(--canvas-bg);
-  border: 4px solid var(--teal);
+  border: 4px solid #FFFFFF;
   border-radius: var(--radius-md);
   display: block;
-  margin: 1.5rem auto;
-  max-width: 100%;      /* se adapta en pantallas pequeñas */
+  margin: 1.7rem auto;
+  max-width: 100%;
   height: auto;
-  box-shadow: var(--shadow-canvas);
+  box-shadow:
+    0 0 0 4px rgba(61, 182, 177, .35),          /* aro turquesa */
+    0 24px 48px -18px rgba(61, 182, 177, .55),  /* resplandor turquesa */
+    0 12px 26px -12px rgba(232, 138, 130, .45), /* resplandor coral */
+    inset 0 2px 12px rgba(255, 255, 255, .70);  /* luz interna */
 }
 
-/* ----------------------- Panel de marcadores ----------------------- */
+/* ============================================================
+   Panel de marcadores (tarjetas con brillo)
+   ============================================================ */
 .panel {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin: 1.5rem 0 .5rem;
+  margin: 1.6rem 0 .5rem;
 }
 
 .panel p {
@@ -170,8 +253,8 @@ canvas {
   align-items: baseline;
   justify-content: center;
   gap: .5rem;
-  min-width: 140px;
-  padding: .8rem 1.4rem;
+  min-width: 145px;
+  padding: .85rem 1.4rem;
   border-radius: var(--radius-md);
   font-size: .95rem;
   font-weight: 600;
@@ -179,20 +262,28 @@ canvas {
 }
 
 /* 1ª tarjeta = Puntaje (turquesa) · 2ª = Vidas (coral) */
-.panel p:nth-of-type(1) { background: var(--teal-soft); border: 1.5px solid var(--teal-border); }
-.panel p:nth-of-type(2) { background: var(--coral-soft); border: 1.5px solid var(--coral-border); }
+.panel p:nth-of-type(1) {
+  background: linear-gradient(180deg, #F2FAF9, #E4F4F3);
+  border: 1.5px solid var(--teal-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .85), 0 10px 20px -14px rgba(45, 120, 116, .40);
+}
+.panel p:nth-of-type(2) {
+  background: linear-gradient(180deg, #FEF2F0, #FBE6E2);
+  border: 1.5px solid var(--coral-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .85), 0 10px 20px -14px rgba(200, 90, 90, .35);
+}
 
 .panel span {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.7rem;
+  font-size: 1.75rem;
   line-height: 1;
 }
 
 #txtPuntaje { color: var(--teal-deep); }
 #txtVidas   { color: var(--coral-num); }
 
-/* Corazoncito delante de las vidas (se mantiene aunque JS actualice el número) */
+/* Corazoncito antes de las vidas (se mantiene aunque JS cambie el número) */
 #txtVidas::before {
   content: "♥";
   color: var(--coral);
@@ -200,13 +291,15 @@ canvas {
   margin-right: .18rem;
 }
 
-/* ----------------------- Botones ----------------------- */
+/* ============================================================
+   Botones (pastel glossy con luz e sombra)
+   ============================================================ */
 .botones {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: .65rem;
-  margin-top: 1.75rem;
+  gap: .7rem;
+  margin-top: 1.9rem;
 }
 
 .botones button {
@@ -214,45 +307,45 @@ canvas {
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: .1px;
-  padding: .7rem 1.35rem;
+  padding: .72rem 1.4rem;
   border: 2px solid transparent;
   border-radius: var(--radius-pill);
   cursor: pointer;
   color: var(--teal-ink);
-  background: var(--teal);
-  box-shadow: var(--shadow-btn);
-  transition: transform .15s ease, background-color .15s ease,
-              box-shadow .15s ease, border-color .15s ease;
+  background: linear-gradient(180deg, #5FC6C1, #3DB6B1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .60), var(--shadow-btn);
+  transition: transform .15s ease, box-shadow .15s ease,
+              filter .15s ease, border-color .15s ease;
 }
 
 .botones button:hover {
-  background: var(--teal-hover);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-btn-hover);
+  filter: brightness(1.05) saturate(1.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .60), var(--shadow-btn-hover);
 }
 
 .botones button:active {
   transform: translateY(0);
-  box-shadow: var(--shadow-btn);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, .12), var(--shadow-btn);
 }
 
 /* 3er botón = "Bajar limon" (acción principal, amarillo limón) */
 .botones button:nth-child(3) {
-  background: var(--lemon);
   color: var(--lemon-ink);
+  background: linear-gradient(180deg, #FDEAA6, #FCE08A);
 }
-.botones button:nth-child(3):hover { background: var(--lemon-hover); }
 
 /* 4º botón = "Reiniciar" (secundario, contorno coral) */
 .botones button:nth-child(4) {
-  background: var(--surface);
   color: var(--coral-ink);
+  background: linear-gradient(180deg, #FFFFFF, #FFF4F2);
   border-color: var(--coral-border);
-  box-shadow: 0 4px 12px -8px rgba(90, 70, 60, .30);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .90), 0 6px 14px -9px rgba(150, 90, 90, .40);
 }
 .botones button:nth-child(4):hover {
-  background: var(--coral-soft);
   border-color: var(--coral);
+  filter: none;
+  background: linear-gradient(180deg, #FFFFFF, #FCEAE7);
 }
 
 /* Foco visible con teclado (accesibilidad) */
@@ -261,13 +354,19 @@ canvas {
   outline-offset: 3px;
 }
 
-/* ----------------------- Pantallas pequeñas ----------------------- */
+/* ============================================================
+   Pantallas pequeñas
+   ============================================================ */
 @media (max-width: 560px) {
-  .contenedor { padding: 1.4rem 1.1rem; border-radius: 22px; }
-  .botones button { flex: 1 1 44%; }   /* dos botones por fila */
+  .contenedor { padding: 1.5rem 1.15rem; border-radius: 24px; }
+  .botones button { flex: 1 1 44%; }        /* dos botones por fila */
+  .flor--3, .flor--5 { display: none; }     /* menos flores en móvil */
+  .flor-esquina--br { width: 54px; height: 54px; }
 }
 
-/* ----------------------- Preferencia: menos movimiento ----------------------- */
+/* ============================================================
+   Preferencia del sistema: menos movimiento
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation: none !important;
